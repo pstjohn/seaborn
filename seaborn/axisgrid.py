@@ -1340,12 +1340,17 @@ class PairGrid(Grid):
                     except KeyError:
                         vals.append(np.array([]))
 
+                these_args = dict(kwargs)
                 # check and see if histtype override was provided in kwargs
-                if 'histtype' in kwargs:
-                    func(vals, color=self.palette, **kwargs)
-                else:
-                    func(vals, color=self.palette, histtype="barstacked",
-                         **kwargs)
+                if 'histtype' not in kwargs:
+                    these_args['histtype'] = "barstacked" 
+
+                # check and see if range override was provided in kwargs
+                if 'range' not in kwargs:
+                    these_args['range'] = ax.get_xlim()
+
+                func(vals, color=self.palette, **these_args)
+
             else:
                 for k, label_k in enumerate(self.hue_names):
                     # Attempt to get data for this level, allowing for empty

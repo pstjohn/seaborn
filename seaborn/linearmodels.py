@@ -1603,14 +1603,6 @@ def pairplot(data, hue=None, hue_order=None, palette=None,
                               " for each level of the hue variable"))
         grid.hue_kws = {"marker": markers}
 
-    # Maybe plot on the diagonal
-    if grid.square_grid:
-        if diag_kind == "hist":
-            grid.map_diag(plt.hist, **diag_kws)
-        elif diag_kind == "kde":
-            diag_kws["legend"] = False
-            grid.map_diag(kdeplot, **diag_kws)
-
     # Maybe plot on the off-diagonals
     if grid.square_grid and diag_kind is not None:
         plotter = grid.map_offdiag
@@ -1622,6 +1614,14 @@ def pairplot(data, hue=None, hue_order=None, palette=None,
         plotter(plt.scatter, **plot_kws)
     elif kind == "reg":
         plotter(regplot, **plot_kws)
+
+    # Maybe plot on the diagonal
+    if grid.square_grid:
+        if diag_kind == "hist":
+            grid.map_diag(plt.hist, **diag_kws)
+        elif diag_kind == "kde":
+            diag_kws["legend"] = False
+            grid.map_diag(kdeplot, **diag_kws)
 
     # Add a legend
     if hue is not None:
